@@ -38,6 +38,10 @@ namespace Mygev.Models {
         public DateTime hora { get; set; }
 
         /// <summary>
+        /// descrição do evento
+        /// </summary>
+        public string descricao { get; set; }
+        /// <summary>
         /// Estado de um evento (presente, passado, futuro)
         /// </summary>
         public string estado { get; set; }

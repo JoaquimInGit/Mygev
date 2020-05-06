@@ -9,22 +9,21 @@ namespace Mygev.Models {
 
         public EventoUtilizadores(){
             
-    }
-        
+        }
+
 
         /// <summary>
-        /// 
+        /// chave estrangeira para o Utilizador
         /// </summary>
         [ForeignKey(nameof(Utilizador))]
         public int idUser { get; set; }
         public Utilizadores Utilizador { get; set; }
 
         /// <summary>
-        /// 
+        /// chave estrangeira para o Evento
         /// </summary>
         [ForeignKey(nameof(Evento))]
         public int idEvento { get; set; }
-
         public Evento Evento { get; set; }
 
         /// <summary>
