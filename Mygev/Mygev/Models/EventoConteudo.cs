@@ -10,22 +10,13 @@ namespace Mygev.Models
     public class EventoConteudo
     {
         public EventoConteudo()
-        {
-            ListaConteudos = new HashSet<EventoConteudo>();//coloca dados na lista dos animais de cada dono
-        }
+        {}
 
         /// <summary>
         /// ID do Conteudo de um Evento
         /// </summary>
         [Key]
         public int ID { get; set; }
-
-        /// <summary>
-        /// chave estrangeira para o Evento
-        /// </summary>
-        [ForeignKey(nameof(Evento))]
-        public int idEvento { get; set; }
-        public Evento Evento { get; set; }
 
         /// <summary>
         /// Usado para adicionar conteudos adicionais ao evento
@@ -37,6 +28,11 @@ namespace Mygev.Models
         /// </summary>
         public string comentario { get; set; }
 
-        public ICollection<EventoConteudo> ListaConteudos { get; set; }
+        /// <summary>
+        /// chave estrangeira para o Evento
+        /// </summary>
+        [ForeignKey(nameof(Evento))]
+        public int idEvento { get; set; }
+        public Evento Evento { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace Mygev.Models {
     public class Evento {
 
         public Evento() {
-            ListaEventos = new HashSet<Evento>();//coloca dados na lista dos animais de cada dono
+            ListaConteudos = new HashSet<EventoConteudo>();
+            ListaUtilizadores = new HashSet<EventoUtilizadores>();
         }
 
         /// <summary>
@@ -35,12 +36,14 @@ namespace Mygev.Models {
         /// <summary>
         /// hora em que decorrerá o evento
         /// </summary>
+        //[DataType(DataType.]
         public DateTime hora { get; set; }
 
         /// <summary>
         /// descrição do evento
         /// </summary>
         public string descricao { get; set; }
+
         /// <summary>
         /// Estado de um evento (presente, passado, futuro)
         /// </summary>
@@ -49,12 +52,13 @@ namespace Mygev.Models {
         /// <summary>
         /// se o evento é publico ou privado
         /// </summary>
-        public bool PublicoPrivado { get; set; }
+        public bool Publico { get; set; }
 
         /// <summary>
-        /// lista dos eventos 
+        /// lista dos conteudos do Evento 
         /// </summary>
-        public ICollection<Evento> ListaEventos { get; set; }
+        public ICollection<EventoConteudo> ListaConteudos { get; set; }
+        public ICollection<EventoUtilizadores> ListaUtilizadores { get; set; }
     }
 }
 
