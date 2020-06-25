@@ -28,13 +28,13 @@ namespace Mygev.Models {
         /// Email do utilizador
         /// </summary>
         [Required]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Password do Utilizador
         /// </summary>
         [Required]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Lista dos eventos em que o utilizador participa

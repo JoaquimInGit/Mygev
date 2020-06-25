@@ -21,33 +21,33 @@ namespace Mygev.Models {
         /// <summary>
         /// Nome do evento
         /// </summary>
-        public string nome { get; set; }
+        public string Nome { get; set; }
 
         /// <summary>
         /// imagem  ilustrativa de um evento
         /// </summary>
-        public string logo { get; set; }
+        public string Logo { get; set; }
 
         /// <summary>
         /// data do evento
         /// </summary>
-        public DateTime data { get; set; }
+        public DateTime Data { get; set; }
 
         /// <summary>
         /// hora em que decorrerá o evento
         /// </summary>
         //[DataType(DataType.]
-        public DateTime hora { get; set; }
+        public DateTime Hora { get; set; }
 
         /// <summary>
         /// descrição do evento
         /// </summary>
-        public string descricao { get; set; }
+        public string Descricao { get; set; }
 
         /// <summary>
         /// Estado de um evento (presente, passado, futuro)
         /// </summary>
-        public string estado { get; set; }
+        public string Estado { get; set; }
 
         /// <summary>
         /// se o evento é publico ou privado

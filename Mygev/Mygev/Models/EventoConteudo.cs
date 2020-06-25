@@ -21,18 +21,18 @@ namespace Mygev.Models
         /// <summary>
         /// Usado para adicionar conteudos adicionais ao evento
         /// </summary>
-        public string conteudo { get; set; }
+        public string Conteudo { get; set; }
 
         /// <summary>
         /// Comentarios extras ao conteudo adicionado
         /// </summary>
-        public string comentario { get; set; }
+        public string Comentario { get; set; }
 
         /// <summary>
         /// chave estrangeira para o Evento
         /// </summary>
         [ForeignKey(nameof(Evento))]
-        public int idEvento { get; set; }
+        public int IDEvento { get; set; }
         public Evento Evento { get; set; }
     }
 }
