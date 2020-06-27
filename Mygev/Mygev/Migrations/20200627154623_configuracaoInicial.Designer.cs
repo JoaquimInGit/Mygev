@@ -10,7 +10,7 @@ using Mygev.Data;
 namespace Mygev.Migrations
 {
     [DbContext(typeof(MygevDB))]
-    [Migration("20200625225044_configuracaoInicial")]
+    [Migration("20200627154623_configuracaoInicial")]
     partial class configuracaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,6 +236,9 @@ namespace Mygev.Migrations
                     b.Property<DateTime>("Hora")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Local")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
 
@@ -247,7 +250,7 @@ namespace Mygev.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Animais");
+                    b.ToTable("Evento");
                 });
 
             modelBuilder.Entity("Mygev.Models.EventoConteudo", b =>
@@ -270,7 +273,7 @@ namespace Mygev.Migrations
 
                     b.HasIndex("IDEvento");
 
-                    b.ToTable("Donos");
+                    b.ToTable("EventoConteudo");
                 });
 
             modelBuilder.Entity("Mygev.Models.EventoUtilizadores", b =>
@@ -295,7 +298,7 @@ namespace Mygev.Migrations
 
                     b.HasIndex("IDUser");
 
-                    b.ToTable("Veterinarios");
+                    b.ToTable("EventoUtilizadores");
                 });
 
             modelBuilder.Entity("Mygev.Models.Utilizadores", b =>
@@ -319,7 +322,7 @@ namespace Mygev.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Consultas");
+                    b.ToTable("Utilizadores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

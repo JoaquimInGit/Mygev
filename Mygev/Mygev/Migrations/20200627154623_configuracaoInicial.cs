@@ -8,25 +8,6 @@ namespace Mygev.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Animais",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: true),
-                    Logo = table.Column<string>(nullable: true),
-                    Data = table.Column<DateTime>(nullable: false),
-                    Hora = table.Column<DateTime>(nullable: false),
-                    Descricao = table.Column<string>(nullable: true),
-                    Estado = table.Column<string>(nullable: true),
-                    Publico = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Animais", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -66,7 +47,27 @@ namespace Mygev.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Consultas",
+                name: "Evento",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(nullable: true),
+                    Logo = table.Column<string>(nullable: true),
+                    Local = table.Column<string>(nullable: true),
+                    Data = table.Column<DateTime>(nullable: false),
+                    Hora = table.Column<DateTime>(nullable: false),
+                    Descricao = table.Column<string>(nullable: true),
+                    Estado = table.Column<string>(nullable: true),
+                    Publico = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Evento", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Utilizadores",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -77,28 +78,7 @@ namespace Mygev.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Consultas", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Donos",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Conteudo = table.Column<string>(nullable: true),
-                    Comentario = table.Column<string>(nullable: true),
-                    IDEvento = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Donos", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Donos_Animais_IDEvento",
-                        column: x => x.IDEvento,
-                        principalTable: "Animais",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Utilizadores", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,7 +188,28 @@ namespace Mygev.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Veterinarios",
+                name: "EventoConteudo",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Conteudo = table.Column<string>(nullable: true),
+                    Comentario = table.Column<string>(nullable: true),
+                    IDEvento = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventoConteudo", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_EventoConteudo_Evento_IDEvento",
+                        column: x => x.IDEvento,
+                        principalTable: "Evento",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventoUtilizadores",
                 columns: table => new
                 {
                     IDEU = table.Column<int>(nullable: false)
@@ -219,17 +220,17 @@ namespace Mygev.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Veterinarios", x => x.IDEU);
+                    table.PrimaryKey("PK_EventoUtilizadores", x => x.IDEU);
                     table.ForeignKey(
-                        name: "FK_Veterinarios_Animais_IDEvento",
+                        name: "FK_EventoUtilizadores_Evento_IDEvento",
                         column: x => x.IDEvento,
-                        principalTable: "Animais",
+                        principalTable: "Evento",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Veterinarios_Consultas_IDUser",
+                        name: "FK_EventoUtilizadores_Utilizadores_IDUser",
                         column: x => x.IDUser,
-                        principalTable: "Consultas",
+                        principalTable: "Utilizadores",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -274,18 +275,18 @@ namespace Mygev.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Donos_IDEvento",
-                table: "Donos",
+                name: "IX_EventoConteudo_IDEvento",
+                table: "EventoConteudo",
                 column: "IDEvento");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Veterinarios_IDEvento",
-                table: "Veterinarios",
+                name: "IX_EventoUtilizadores_IDEvento",
+                table: "EventoUtilizadores",
                 column: "IDEvento");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Veterinarios_IDUser",
-                table: "Veterinarios",
+                name: "IX_EventoUtilizadores_IDUser",
+                table: "EventoUtilizadores",
                 column: "IDUser");
         }
 
@@ -307,10 +308,10 @@ namespace Mygev.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Donos");
+                name: "EventoConteudo");
 
             migrationBuilder.DropTable(
-                name: "Veterinarios");
+                name: "EventoUtilizadores");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -319,10 +320,10 @@ namespace Mygev.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Animais");
+                name: "Evento");
 
             migrationBuilder.DropTable(
-                name: "Consultas");
+                name: "Utilizadores");
         }
     }
 }

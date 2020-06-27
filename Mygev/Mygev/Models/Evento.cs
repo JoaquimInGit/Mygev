@@ -29,6 +29,11 @@ namespace Mygev.Models {
         public string Logo { get; set; }
 
         /// <summary>
+        /// local do evento
+        /// </summary>
+        public string Local { get; set; }
+
+        /// <summary>
         /// data do evento
         /// </summary>
         public DateTime Data { get; set; }
