@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mygev.Migrations
 {
-    public partial class configuracaoInicial : Migration
+    public partial class createAllTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,13 +52,13 @@ namespace Mygev.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(maxLength: 50, nullable: false),
                     Logo = table.Column<string>(nullable: true),
-                    Local = table.Column<string>(nullable: true),
-                    Data = table.Column<DateTime>(nullable: false),
-                    Hora = table.Column<DateTime>(nullable: false),
-                    Descricao = table.Column<string>(nullable: true),
-                    Estado = table.Column<string>(nullable: true),
+                    Local = table.Column<string>(maxLength: 30, nullable: false),
+                    DataInicio = table.Column<DateTime>(nullable: false),
+                    DataFim = table.Column<DateTime>(nullable: false),
+                    Descricao = table.Column<string>(maxLength: 255, nullable: false),
+                    Estado = table.Column<string>(nullable: false),
                     Publico = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -127,8 +127,8 @@ namespace Mygev.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -172,8 +172,8 @@ namespace Mygev.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
