@@ -21,6 +21,8 @@ namespace Mygev.Models {
         /// <summary>
         /// Nome do evento
         /// </summary>
+        [StringLength(50, ErrorMessage = "O {0} do Evento não pode ter mais de {1} carateres.")]
+        [Required(ErrorMessage = "O {0} do Evento é de preenchimento obrigatório.")]
         public string Nome { get; set; }
 
         /// <summary>
@@ -31,27 +33,33 @@ namespace Mygev.Models {
         /// <summary>
         /// local do evento
         /// </summary>
+        [Required(ErrorMessage = "Tem de ser definido um {0}.")]
+        [StringLength(30, ErrorMessage = "O {0} não pode ter mais de {1} carateres.")]
         public string Local { get; set; }
 
         /// <summary>
-        /// data do evento
+        /// data inicial(dia e hora) do evento
         /// </summary>
-        public DateTime Data { get; set; }
+        [Required(ErrorMessage = "A Data de Inicio do evento é de preenchimento obrigatório")]
+        public DateTime DataInicio { get; set; }
 
         /// <summary>
-        /// hora em que decorrerá o evento
+        /// data final(dia e hora) do evento
         /// </summary>
         //[DataType(DataType.]
-        public DateTime Hora { get; set; }
+        public DateTime DataFim { get; set; }
 
         /// <summary>
         /// descrição do evento
         /// </summary>
+        [Required(ErrorMessage = "A {0} do evento é de preenchimento obrigatório")]
+        [StringLength(255, ErrorMessage = "A {0} não pode ter mais de {1} carateres.")]
         public string Descricao { get; set; }
 
         /// <summary>
         /// Estado de um evento (presente, passado, futuro)
         /// </summary>
+        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         public string Estado { get; set; }
 
         /// <summary>
@@ -63,6 +71,10 @@ namespace Mygev.Models {
         /// lista dos conteudos do Evento 
         /// </summary>
         public ICollection<EventoConteudo> ListaConteudos { get; set; }
+
+        /// <summary>
+        /// lista dos Utilizadores do Evento 
+        /// </summary>
         public ICollection<EventoUtilizadores> ListaUtilizadores { get; set; }
     }
 }

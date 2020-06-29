@@ -23,7 +23,10 @@ namespace Mygev.Controllers
         public async Task<IActionResult> Index()
         {
             var mygevDB = _context.EventoConteudo.Include(e => e.Evento);
+            //var EventoConteudo = _context.EventoConteudo.Include(e => e.Evento);
+            //var Evento = _context.EventoConteudo.Include(e => e.ID);
             return View(await mygevDB.ToListAsync());
+            //return View(Tuple.Create(Evento,EventoConteudo));
         }
 
         // GET: EventoConteudo/Details/5
