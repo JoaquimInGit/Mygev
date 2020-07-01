@@ -28,9 +28,9 @@ namespace Mygev
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MygevDB>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MygevDB>();
             services.AddControllersWithViews();
             services.AddRazorPages();
