@@ -4,9 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create">Criar um novo Conteudo para o Evento</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
