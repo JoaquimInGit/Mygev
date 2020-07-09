@@ -28,18 +28,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Utilizador.Email)
+                @Html.DisplayFor(modelItem => item.Utilizador.NomeUser)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Evento.Descricao)
+                @Html.DisplayFor(modelItem => item.Evento.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Permissao)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IDEU">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IDEU">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IDEU">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }

@@ -17,10 +17,9 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Logo)
+                @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Local)
@@ -47,14 +46,14 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td>
-                        <button asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Add Evento</button>
-                    </td>*@
+                <td>
+                    <a asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Logo)
+                    @Html.DisplayFor(modelItem => item.Local)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DataInicio)
@@ -80,3 +79,4 @@
         }
     </tbody>
 </table>
+

@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace Mygev.Models {
     public class EventoUtilizadores {
 
-        public EventoUtilizadores(){
-            
-        }
+        public EventoUtilizadores()
+        {}
+
         [Key]
-        public int IDEU { get; set; }
+        public int ID { get; set; }
+
         /// <summary>
         /// chave estrangeira para o Utilizador
         /// </summary>
@@ -28,8 +29,8 @@ namespace Mygev.Models {
         public Evento Evento { get; set; }
 
         /// <summary>
-        /// Diz se o utilizador tem permições para alterar o evento (1-Admistrador 2-Colaborador 3-Participante)
+        /// Diz se o utilizador tem permições para alterar o evento (Admistrador Colaborador Participante)
         /// </summary>
-        public int Permissao { get; set; }
+        public string Permissao { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace Mygev.Models {
         [Key]
         public int ID { get; set; }
 
-
         /// <summary>
         /// Nome que o utilizador usará na aplicaçao (username / Nick)
         /// </summary>
@@ -29,20 +28,23 @@ namespace Mygev.Models {
         /// Email do utilizador
         /// </summary>
         [Required]
-        //public string Localidade { get; set; }
         public string Email { get; set; }
 
         /// <summary>
-        /// Password do Utilizador
+        /// Localidade do utilizador
         /// </summary>
-        [Required]
-        //public string Bio { get; set; }
-        public string Password { get; set; }
+        public string Localidade { get; set; }
+
+        /// <summary>
+        /// Biografia do Utilizador
+        /// </summary>
+        public string Bio { get; set; }
 
         /// <summary>
         /// string do utilizador autenticado
         /// </summary>
-        //public string UserId { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
         /// <summary>
         /// Lista dos eventos em que o utilizador participa

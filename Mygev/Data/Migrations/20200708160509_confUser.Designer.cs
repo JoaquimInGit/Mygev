@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mygev.Data;
 
 namespace Mygev.Migrations
 {
     [DbContext(typeof(MygevDB))]
-    partial class MygevDBModelSnapshot : ModelSnapshot
+    [Migration("20200708160509_confUser")]
+    partial class confUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,7 +295,7 @@ namespace Mygev.Migrations
 
             modelBuilder.Entity("Mygev.Models.EventoUtilizadores", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("IDEU")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -304,10 +306,10 @@ namespace Mygev.Migrations
                     b.Property<int>("IDUser")
                         .HasColumnType("int");
 
-                    b.Property<string>("Permissao")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Permissao")
+                        .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("IDEU");
 
                     b.HasIndex("IDEvento");
 
@@ -323,14 +325,8 @@ namespace Mygev.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Localidade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NomeUser")
@@ -338,7 +334,6 @@ namespace Mygev.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");

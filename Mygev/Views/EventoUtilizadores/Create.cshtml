@@ -13,12 +13,8 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IDUser" class="control-label"></label>
-                <select asp-for="IDUser" class ="form-control" asp-items="ViewBag.IDUser"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IDEvento" class="control-label"></label>
-                <select asp-for="IDEvento" class ="form-control" asp-items="ViewBag.IDEvento"></select>
+                <label class="control-label">Nome do Evento</label>
+                <input class ="form-control" readonly value="@ViewBag.Evento"/>
             </div>
             <div class="form-group">
                 <label asp-for="Permissao" class="control-label"></label>

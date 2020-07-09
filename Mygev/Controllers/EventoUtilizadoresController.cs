@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +14,20 @@ namespace Mygev.Controllers
     public class EventoUtilizadoresController : Controller
     {
         private readonly MygevDB _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EventoUtilizadoresController(MygevDB context)
+        public EventoUtilizadoresController(MygevDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: EventoUtilizadores
         public async Task<IActionResult> Index()
         {
-            var mygevDB = _context.EventoUtilizadores.Include(e => e.Evento).Include(e => e.Utilizador);
+            var mygevDB = _context.EventoUtilizadores
+                .Include(e => e.Evento)
+                .Include(e => e.Utilizador);
             return View(await mygevDB.ToListAsync());
         }
 
@@ -37,7 +42,7 @@ namespace Mygev.Controllers
             var eventoUtilizadores = await _context.EventoUtilizadores
                 .Include(e => e.Evento)
                 .Include(e => e.Utilizador)
-                .FirstOrDefaultAsync(m => m.IDEU == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (eventoUtilizadores == null)
             {
                 return NotFound();
@@ -47,10 +52,9 @@ namespace Mygev.Controllers
         }
 
         // GET: EventoUtilizadores/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao");
-            ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email");
+            ViewData["Evento"] = _context.Evento.Where(e=>e.ID==id).Select(e => e.Nome).FirstOrDefault();
             return View();
         }
 
@@ -59,18 +63,28 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
+        public async Task<IActionResult> Create(int id,[Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
         {
+            //id do evento
+            var evento = await _context.Evento.FindAsync(id);
+            if (evento == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
+                eventoUtilizadores.IDEvento = id;
+                eventoUtilizadores.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
                 _context.Add(eventoUtilizadores);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao", eventoUtilizadores.IDEvento);
-            ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email", eventoUtilizadores.IDUser);
+            //ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao", eventoUtilizadores.IDEvento);
+            //ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email", eventoUtilizadores.IDUser);
             return View(eventoUtilizadores);
         }
+
 
         // GET: EventoUtilizadores/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -97,7 +111,7 @@ namespace Mygev.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
         {
-            if (id != eventoUtilizadores.IDEU)
+            if (id != eventoUtilizadores.ID)
             {
                 return NotFound();
             }
@@ -111,7 +125,7 @@ namespace Mygev.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventoUtilizadoresExists(eventoUtilizadores.IDEU))
+                    if (!EventoUtilizadoresExists(eventoUtilizadores.ID))
                     {
                         return NotFound();
                     }
@@ -138,7 +152,7 @@ namespace Mygev.Controllers
             var eventoUtilizadores = await _context.EventoUtilizadores
                 .Include(e => e.Evento)
                 .Include(e => e.Utilizador)
-                .FirstOrDefaultAsync(m => m.IDEU == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (eventoUtilizadores == null)
             {
                 return NotFound();
@@ -160,7 +174,7 @@ namespace Mygev.Controllers
 
         private bool EventoUtilizadoresExists(int id)
         {
-            return _context.EventoUtilizadores.Any(e => e.IDEU == id);
+            return _context.EventoUtilizadores.Any(e => e.ID == id);
         }
     }
 }

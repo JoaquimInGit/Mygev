@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.Logo)
         </dt>
         <dd class="col-sm-10">
-            <img src="~/Imagens/LogosEventos/@Model.Logo" alt="logo do evento @Model.Nome" title="@Model.Nome" />
+            <img src="~/Imagens/LogosEventos/@Model.Logo" height="50" alt="logo do evento @Model.Nome" title="@Model.Nome" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Local)
@@ -66,6 +66,40 @@
 </div>
 
 <div>
+    <h2>Lista de Utilizadores</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Utilizador
+            </th>
+            <th>
+                Evento ID
+            </th>
+            <th>
+                Role
+            </th>
+        </tr>
+
+        @foreach (var users in Model.ListaUtilizadores)
+        {
+            <tr>
+                <td>
+                    @*Utilizador*@
+                    @users.Utilizador.NomeUser
+                </td>
+                <td>
+                    @*ID Evento*@
+                    @users.Evento.ID
+                </td>
+                <td>
+                    @*Permissão*@
+                    @users.Permissao
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
     <h2>Lista de Conteudos</h2>
     <table class="table">
         <tr>
@@ -99,3 +133,5 @@
         }
     </table>
 </div>
+
+

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Mygev.Data;
+using Mygev.Models;
 
 namespace Mygev.Areas.Identity.Pages.Account
 {
@@ -24,17 +25,20 @@ namespace Mygev.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly MygevDB _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            MygevDB context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -89,8 +93,17 @@ namespace Mygev.Areas.Identity.Pages.Account
                     Timestamp = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var utilizadores = new Utilizadores{
+                    NomeUser = Input.Nome,
+                    Email = Input.Email,
+                    UserId = user.Id
+                };
+                
+
                 if (result.Succeeded)
                 {
+                    _context.Add(utilizadores);
+                    var result2 =  await _context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
