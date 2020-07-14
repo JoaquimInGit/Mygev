@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,15 +22,21 @@ namespace Mygev.Controllers
         private readonly MygevDB _context;
 
         /// <summary>
+        /// variável que identifica o utilizador Atual
+        /// </summary>
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        /// <summary>
         /// variável que contém os dados do 'ambiente' do servidor. 
         /// Em particular, onde estão os ficheiros guardados, no disco rígido do servidor
         /// </summary>
         private readonly IWebHostEnvironment _caminho;
 
-        public EventoController(MygevDB context,IWebHostEnvironment caminho)
+        public EventoController(MygevDB context,IWebHostEnvironment caminho, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _caminho = caminho;
+            _userManager = userManager;
         }
 
         // GET: Evento
@@ -72,7 +79,7 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento, IFormFile logoEvento)
+        public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento, EventoUtilizadores eventoUtilizadores, IFormFile logoEvento)
         {
             // variaveis auxiliares para processar a fotografia
             string caminhoLogo = "";
@@ -112,7 +119,16 @@ namespace Mygev.Controllers
             {
                 try
                 {
+                    //insere na BD
                     _context.Add(evento);
+                    await _context.SaveChangesAsync();
+
+                    //Vai bustar o ultimo registo á BD
+                    eventoUtilizadores.IDEvento = _context.Evento.Max(e => e.ID);
+                    eventoUtilizadores.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
+                    eventoUtilizadores.Permissao = "Administrador";
+                    _context.Add(eventoUtilizadores);
+
                     await _context.SaveChangesAsync();
                     // se há imagem, vou guardá-la no disco rígido
                     if (haImagem)
@@ -128,6 +144,24 @@ namespace Mygev.Controllers
             }
             return View(evento);
         }
+
+        // GET: Evento/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var evento = await _context.Evento.FindAsync(id);
+            if (evento == null)
+            {
+                return NotFound();
+            }
+
+            return View(evento);
+        }
+
 
         // POST: Evento/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

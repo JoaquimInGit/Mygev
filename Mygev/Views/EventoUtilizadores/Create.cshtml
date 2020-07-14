@@ -16,21 +16,17 @@
                 <label class="control-label">Nome do Evento</label>
                 <input class ="form-control" readonly value="@ViewBag.Evento"/>
             </div>
+
             <div class="form-group">
-                <label asp-for="Permissao" class="control-label"></label>
-                <input asp-for="Permissao" class="form-control" />
-                <span asp-validation-for="Permissao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <p>Tem a certeza que deseja participar</p>
+                <input type="submit" value="Sim" class="btn btn-primary" />
+                <a asp-action="Index">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

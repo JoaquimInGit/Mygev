@@ -50,14 +50,14 @@ namespace Mygev.Controllers
 
             return View(eventoUtilizadores);
         }
-
+        
         // GET: EventoUtilizadores/Create
         public IActionResult Create(int id)
         {
             ViewData["Evento"] = _context.Evento.Where(e=>e.ID==id).Select(e => e.Nome).FirstOrDefault();
             return View();
         }
-
+        
         // POST: EventoUtilizadores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -75,6 +75,7 @@ namespace Mygev.Controllers
             {
                 eventoUtilizadores.IDEvento = id;
                 eventoUtilizadores.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
+                eventoUtilizadores.Permissao = "Convidado";
                 _context.Add(eventoUtilizadores);
 
                 await _context.SaveChangesAsync();
