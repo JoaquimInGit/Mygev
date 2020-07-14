@@ -49,6 +49,7 @@ namespace Mygev.Controllers
             var evento = await _context.Evento
                 .Include(e => e.ListaConteudos)
                 .Include(e => e.ListaUtilizadores)
+                .ThenInclude(u => u.Utilizador)
                 .Where(v => v.ID == id)
                 .FirstOrDefaultAsync();
 

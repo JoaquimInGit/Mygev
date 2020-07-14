@@ -93,7 +93,7 @@ namespace Mygev.Areas.Identity.Pages.Account
                     Timestamp = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var utilizadores = new Utilizadores{
+                var Utilizadores = new Utilizadores{
                     NomeUser = Input.Nome,
                     Email = Input.Email,
                     UserId = user.Id
@@ -102,7 +102,7 @@ namespace Mygev.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _context.Add(utilizadores);
+                    _context.Add(Utilizadores);
                     var result2 =  await _context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
