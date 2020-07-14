@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,7 @@ namespace Mygev.Controllers
         /// variável que identifica a BD do projeto
         /// </summary>
         private readonly MygevDB _context;
+        
 
         /// <summary>
         /// variável que identifica o utilizador Atual
@@ -31,8 +33,8 @@ namespace Mygev.Controllers
         /// Em particular, onde estão os ficheiros guardados, no disco rígido do servidor
         /// </summary>
         private readonly IWebHostEnvironment _caminho;
-
-        public EventoController(MygevDB context,IWebHostEnvironment caminho, UserManager<ApplicationUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public EventoController(MygevDB context,IWebHostEnvironment caminho)
         {
             _context = context;
             _caminho = caminho;
@@ -52,6 +54,12 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
+            //select IDUser from eventoutilizadores where userId=userLogado idevento=id and permissao = 'Administrador'
+            var admin = await _context.EventoUtilizadores
+                .Where(e => e.IDEvento == id)
+                .Where(e => e.Utilizador.UserId == _userManager.GetUserId(User))
+                .FirstOrDefaultAsync();
+            ViewBag.Permissao = admin.Permissao;
 
             var evento = await _context.Evento
                 .Include(e => e.ListaConteudos)
@@ -64,8 +72,7 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-
-            return View(evento);
+                return View(evento);
         }
 
         // GET: Evento/Create
@@ -143,6 +150,31 @@ namespace Mygev.Controllers
                 }
             }
             return View(evento);
+        }
+
+        // GET: Evento/Edit/5
+        //[Authorize(EventoUtilizadores.Permissao.Equals = "Administrativo")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //select IDUser from eventoutilizadores where userId=userLogado and permissao = 'Administrador'
+            var admin = await _context.EventoUtilizadores
+                .Include(e => e.Utilizador)
+                .Where(v => v.ID == id)
+                .Where(u => u.Utilizador.UserId == _userManager.GetUserId(User))
+                .FirstOrDefaultAsync();
+            
+                var evento = await _context.Evento.FindAsync(id);
+                if (evento == null)
+                {
+
+                    return NotFound();
+                }
+                return View(evento);
+            
         }
 
         // GET: Evento/Edit/5
