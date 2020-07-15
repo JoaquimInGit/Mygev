@@ -3,75 +3,41 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>body{background-color: #B0C4DE; }</style>
 
-<h1>Index</h1>
+<div class="container">
+    <h1>Eventos</h1>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <p>
-        <a asp-action="Create">Criar um novo Evento</a>
-    </p>
-}
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Local)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataFim)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publico)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            <a asp-action="Create">Criar um novo Evento</a>
+        </p>
+    }
+    <div class="row">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Local)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataInicio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataFim)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publico)
-                </td>
-            </tr>
+            <div class="col-sm-3">
+                <div class="card-columns">
+                    <div class="card bg-light" style="width: 15rem;">
+                        <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
+                            <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataFim) : @Html.DisplayFor(modelItem => item.DataFim)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Estado) : @Html.DisplayFor(modelItem => item.Estado)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Publico) : @Html.DisplayFor(modelItem => item.Publico)</li>
+                        </ul>
+                    </div>
+                </div>
+                <br />
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
 
