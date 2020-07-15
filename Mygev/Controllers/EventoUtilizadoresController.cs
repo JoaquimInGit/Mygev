@@ -11,6 +11,7 @@ using Mygev.Models;
 
 namespace Mygev.Controllers
 {
+
     public class EventoUtilizadoresController : Controller
     {
         private readonly MygevDB _context;
@@ -25,9 +26,11 @@ namespace Mygev.Controllers
         // GET: EventoUtilizadores
         public async Task<IActionResult> Index()
         {
+            int cUserId = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
             var mygevDB = _context.EventoUtilizadores
                 .Include(e => e.Evento)
-                .Include(e => e.Utilizador);
+                .Include(e => e.Utilizador)
+                .Where(e => e.IDUser == cUserId);
             return View(await mygevDB.ToListAsync());
         }
 

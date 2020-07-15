@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <p>
+        <h1>Meus Eventos</h1>
+        <a asp-controller="Evento" asp-action="Create">Criar Novo Evento</a>
+        
+    </p>
 <table class="table">
     <thead>
         <tr>
@@ -25,23 +26,66 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Utilizador.NomeUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Evento.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Permissao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        @foreach (var item in Model)
+            @if (item.Permissao != "Participante")
+            {
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Utilizador.NomeUser)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Evento.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Permissao)
+                        </td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.ID">Eliminar Evento</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+<h1>Eventos em que Participo</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Utilizador)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Evento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Permissao)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+             @if (item.Permissao == "Participante") { 
+              
+            
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Utilizador.NomeUser)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Evento.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Permissao)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.ID">Deixar de Participar</a>
+                    </td>
+                </tr>
+                     }
+                 }
+        </tbody>
+                 
+    </table>
