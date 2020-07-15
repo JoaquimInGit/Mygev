@@ -74,18 +74,28 @@ namespace Mygev.Controllers
             }
             if (ModelState.IsValid)
             {
-                eventoUtilizadores.IDEvento = id;
-                eventoUtilizadores.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
-                //Tinhamos originalmente Participante e sem queres coloquei convidado, nao esquecer de discutir isto
-                eventoUtilizadores.Permissao = "Convidado";
-                _context.Add(eventoUtilizadores);
+                //Pesquisa na DB pelo ID do utilizador atual
+                int idUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
+                //Pesquisa na tabela EventoUtilizadores por o id do utilizador atual
+                var idDB = await _context.EventoUtilizadores
+                .Where(v => v.IDEvento == id)
+                .Where(v => v.IDUser == idUser)
+                .Select(v =>v.IDUser)
+                .FirstOrDefaultAsync();
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!idDB.Equals(idUser))
+                {
+                    eventoUtilizadores.IDEvento = id;
+                    eventoUtilizadores.IDUser = idUser;
+                    eventoUtilizadores.Permissao = "Participante";
+                    _context.Add(eventoUtilizadores);
+
+                    await _context.SaveChangesAsync();
+                    
+                }
+
             }
-            //ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao", eventoUtilizadores.IDEvento);
-            //ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email", eventoUtilizadores.IDUser);
-            return View(eventoUtilizadores);
+            return RedirectToAction("Details", "Evento", new { id });
         }
 
 

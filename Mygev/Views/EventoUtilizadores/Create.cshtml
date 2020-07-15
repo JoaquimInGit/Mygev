@@ -19,10 +19,10 @@
 
             <div class="form-group">
                 <p>Tem a certeza que deseja participar</p>
-                <input type="submit" value="Sim" class="btn btn-primary" />
-                @*<a asp-action="Index">Back to List</a>*@
-                <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id">Voltar a Trás</a>
-            </div>
+                    <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id"><input type="submit" value="Sim" class="btn btn-primary"/></a>
+                    @*<a asp-action="Index">Back to List</a>*@
+                    <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id">Voltar a Trás</a>
+</div>
         </form>
     </div>
 </div>
