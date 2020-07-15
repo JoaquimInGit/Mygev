@@ -55,6 +55,7 @@ namespace Mygev.Controllers
         public IActionResult Create(int id)
         {
             ViewData["Evento"] = _context.Evento.Where(e=>e.ID==id).Select(e => e.Nome).FirstOrDefault();
+            ViewBag.id = id;
             return View();
         }
         
@@ -75,6 +76,7 @@ namespace Mygev.Controllers
             {
                 eventoUtilizadores.IDEvento = id;
                 eventoUtilizadores.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
+                //Tinhamos originalmente Participante e sem queres coloquei convidado, nao esquecer de discutir isto
                 eventoUtilizadores.Permissao = "Convidado";
                 _context.Add(eventoUtilizadores);
 

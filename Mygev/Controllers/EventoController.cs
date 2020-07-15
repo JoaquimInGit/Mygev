@@ -53,12 +53,20 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
+
+            //Se o utilizador não tem loggin ativo Coloca a Permissão como "convidado"
+            if (User.Identity.IsAuthenticated){ 
             //select IDUser from eventoutilizadores where userId=userLogado idevento=id and permissao = 'Administrador'
             var admin = await _context.EventoUtilizadores
                 .Where(e => e.IDEvento == id)
                 .Where(e => e.Utilizador.UserId == _userManager.GetUserId(User))
                 .FirstOrDefaultAsync();
-            ViewBag.Permissao = admin.Permissao;
+                 ViewBag.Permissao = admin.Permissao;
+            
+            }
+            else{
+                ViewBag.Permissao = "Convidado";
+            }
 
             var evento = await _context.Evento
                 .Include(e => e.ListaConteudos)

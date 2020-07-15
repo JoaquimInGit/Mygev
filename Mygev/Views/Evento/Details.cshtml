@@ -62,8 +62,9 @@
 </div>
 <div>
     @if(@ViewBag.Permissao == "Administrador") { 
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit |</a>
     }
+    <a asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@Model.ID">Participar |</a>
     <a asp-action="Index">Back to List</a>
 </div>
 
