@@ -23,6 +23,11 @@ namespace Mygev.Controllers
         // GET: Utilizadores
         public async Task<IActionResult> Index()
         {
+        /* var EventoUser = await _context.Utilizadores
+               .Include(e => e.ListaEventos)
+               .Where(e => e.UserId == _userManager.GetUserId(User))
+               .ThenInclude(e => e.ID == e.ListaEventos)
+               .FirstOrDefaultAsync();*/
             return View(await _context.Utilizadores.ToListAsync());
         }
 

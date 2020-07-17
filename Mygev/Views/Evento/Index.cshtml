@@ -3,41 +3,92 @@
 @{
     ViewData["Title"] = "Index";
 }
-<style>body{background-color: #B0C4DE; }</style>
+<style>
+    body {
+        background-color: #B0C4DE;
+    }
+</style>
 
 <div class="container">
-    <h1>Eventos</h1>
 
     @if (User.Identity.IsAuthenticated)
     {
         <p>
             <a asp-action="Create">Criar um novo Evento</a>
         </p>
-    }
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-sm-3">
-                <div class="card-columns">
-                    <div class="card bg-light" style="width: 15rem;">
-                        <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
-                            <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
-                            <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+
+        <h1>Eventos</h1>
+        <form method="post">
+            <label for="Visibilidade">  Publico</label>
+            <select type="text" name="visibilidade">
+                <option value="publico">Publico</option>
+                <option value="privado">Privado</option>
+                <option value="ambos">Ambos</option>
+            </select>
+            <label for="nomeEvento">    Nome</label>
+            <input type="text" name="nomeEvento">
+            <label for="local">    Local</label>
+            <input type="text" name="local">
+            <label>     </label>
+            <input type="submit" value="Pesquisar" />
+        </form>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-3">
+                    <div class="card-columns">
+                        <div class="card bg-light" style="width: 15rem;">
+                            <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
+                                <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.DataFim) : @Html.DisplayFor(modelItem => item.DataFim)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Estado) : @Html.DisplayFor(modelItem => item.Estado)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Publico) : @Html.DisplayFor(modelItem => item.Publico)</li>
+                            </ul>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
-                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>
-                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataFim) : @Html.DisplayFor(modelItem => item.DataFim)</li>
-                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Estado) : @Html.DisplayFor(modelItem => item.Estado)</li>
-                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Publico) : @Html.DisplayFor(modelItem => item.Publico)</li>
-                        </ul>
                     </div>
+                    <br />
                 </div>
-                <br />
-            </div>
+            }
+        </div>
+    }
+    else
+    {@foreach (var item in Model)
+        {
+            @if (item.Publico == true)
+            {
+                <h2>Eventos Publicos</h2>
+                <div class="col-sm-3">
+                    <div class="card-columns">
+                        <div class="card bg-light" style="width: 15rem;">
+                            <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
+                                <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.DataFim) : @Html.DisplayFor(modelItem => item.DataFim)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Estado) : @Html.DisplayFor(modelItem => item.Estado)</li>
+                                <li class="list-group-item">@Html.DisplayNameFor(model => model.Publico) : @Html.DisplayFor(modelItem => item.Publico)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            }
         }
-    </div>
+
+
+}
 </div>
 

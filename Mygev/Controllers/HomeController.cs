@@ -4,19 +4,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Mygev.Data;
 using Mygev.Models;
 
 namespace Mygev.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
+        private readonly MygevDB _context;
 
-        public HomeController(ILogger<HomeController> logger) {
+        public HomeController(ILogger<HomeController> logger, MygevDB context) {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index() {
-            return View();
+        public async Task<IActionResult> IndexAsync() {
+            return View(await _context.Evento.ToListAsync());
         }
 
         public IActionResult Privacy() {

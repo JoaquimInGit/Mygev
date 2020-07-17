@@ -44,3 +44,36 @@
         }
     </tbody>
 </table>
+<div class="container">
+    <div class="row">
+        <p>AQUIAQUI</p>
+        @foreach (var puta in Model)
+        {
+            @foreach (var item in puta.ListaEventos)
+            {
+
+
+                <div class="col-sm-3">
+                    <div class="card-columns">
+                        <div class="card bg-light" style="width: 15rem;">
+                            <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Evento.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Evento.Nome)</a>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Evento.Descricao)</p>
+                                <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> : @Html.DisplayFor(modelItem => item.Evento.Local)</li>
+                                <li class="list-group-item"> : @Html.DisplayFor(modelItem => item.Evento.DataInicio)</li>
+                                <li class="list-group-item"> : @Html.DisplayFor(modelItem => item.Evento.DataFim)</li>
+                                <li class="list-group-item"> : @Html.DisplayFor(modelItem => item.Evento.Estado)</li>
+                                <li class="list-group-item"> : @Html.DisplayFor(modelItem => item.Evento.Publico)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            }
+        }
+    </div>
+    </div>

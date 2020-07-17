@@ -1,8 +1,46 @@
-﻿@{
+﻿@model IEnumerable<Mygev.Models.Evento>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<style>
+    body {
+        background-color: #B0C4DE;
+    }
+</style>
+
+<div class="container">
+    <h1>Eventos Hoje - Abertos para todos</h1>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            if (item.Publico == true && item.DataInicio.Date.Equals(DateTime.Today.Date)){ 
+
+            <div class="col-sm-3">
+                <div class="card-columns">
+                    <div class="card bg-light" style="width: 15rem;">
+                        <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
+                            <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.DataFim) : @Html.DisplayFor(modelItem => item.DataFim)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Estado) : @Html.DisplayFor(modelItem => item.Estado)</li>
+                            <li class="list-group-item">@Html.DisplayNameFor(model => model.Publico) : @Html.DisplayFor(modelItem => item.Publico)</li>
+                        </ul>
+                    </div>
+                </div>
+                <br />
+            </div>
+            }
+        }
+    </div>
 </div>
+

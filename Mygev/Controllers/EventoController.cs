@@ -41,9 +41,42 @@ namespace Mygev.Controllers
         }
 
         // GET: Evento
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String nomeEvento, String visibilidade, String local)
         {
-            return View(await _context.Evento.ToListAsync());
+            if (nomeEvento == null)
+            { nomeEvento = ""; }
+            if (visibilidade == null) visibilidade = "publico";
+            if (local == null) local = "";
+                if (visibilidade.Equals("privado"))
+                {
+                    var evento = (IEnumerable<Object>)await _context.Evento
+                        .Where(v => v.Nome.Contains(nomeEvento))
+                        .Where(v=> v.Local.Contains(local))
+                        .Where(v => v.Publico == false)
+                        .ToListAsync();
+                    return View(evento);
+                }
+                if (visibilidade.Equals("publico")){
+                    var evento = (IEnumerable<Object>)await _context.Evento
+                            .Where(v => v.Nome.Contains(nomeEvento))
+                            .Where(v => v.Local.Contains(local))
+                            .Where(v => v.Publico == true)
+                            .ToListAsync();
+                    return View(evento);
+
+                }
+                else{
+                    var evento = (IEnumerable<Object>)await _context.Evento
+                        .Where(v => v.Local.Contains(local))
+                        .Where(v => v.Nome.Contains(nomeEvento))
+                        .ToListAsync();
+                    return View(evento);
+                }
+            
+          /*  else
+            {
+                return View(await _context.Evento.ToListAsync());
+            }*/
         }
 
         // GET: Evento/Details/5
