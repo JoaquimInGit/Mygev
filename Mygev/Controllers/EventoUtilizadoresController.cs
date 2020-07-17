@@ -125,9 +125,10 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-           
+         // ViewBag.IDEvento = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
+          //ViewBag.IDUser = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
             ViewData["IDEvento"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
-            ViewData["IDUser"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
+             ViewData["IDUser"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
             return View(eventoUtilizadores);
         }
 
@@ -136,17 +137,19 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
         {
             if (id != eventoUtilizadores.ID)
             {
                 return NotFound();
+                //return RedirectToAction("Details", "Evento", new { eventoUtilizadores.IDEvento });
             }
-
+           // new { idxpto = eventoUtilizadores.IDEvento; }
             if (ModelState.IsValid)
             {
                 try
                 {
+                 //  _context.Add(eventoUtilizadores.per)
                     _context.Update(eventoUtilizadores);
                     await _context.SaveChangesAsync();
                 }
@@ -161,9 +164,11 @@ namespace Mygev.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction("Details", "Evento", new { eventoUtilizadores.IDEvento });
+                return Redirect("~/Evento/Details/" + eventoUtilizadores.IDEvento);
             }
-            return View(eventoUtilizadores);
+           // return RedirectToAction("Details", "Evento/", new { idxpto = eventoUtilizadores.IDEvento });
+            return Redirect("~/Evento/Details/" + eventoUtilizadores.IDEvento);
         }
 
         // GET: EventoUtilizadores/Delete/5

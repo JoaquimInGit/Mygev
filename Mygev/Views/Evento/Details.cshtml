@@ -147,10 +147,11 @@
                         @users.Permissao
                     </td>
                     <td>
-                        @if (@ViewBag.Permissao == "Administrador")
-                        {
-                            <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
-                        }
+                        @*if (@ViewBag.Permissao == "Administrador")
+        {
+            <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
+        }*@
+                        <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
                     </td>
                 </tr>
                     }
