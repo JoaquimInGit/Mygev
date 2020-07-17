@@ -67,8 +67,18 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id,[Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
+        public async Task<IActionResult> Create(int id,[Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores, string passEvento)
         {
+            var pass = await _context.Evento
+               .Where(v => v.ID == id)
+               .Select(v => v.passEvento)
+               .FirstOrDefaultAsync();
+
+            if (pass != passEvento)
+            {
+                ViewBag.pass = "Falhou";
+                return View();
+            }
             //id do evento
             var evento = await _context.Evento.FindAsync(id);
             if (evento == null)

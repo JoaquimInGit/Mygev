@@ -86,6 +86,8 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
+
+
             ViewBag.Permissao = "Participante";
             //Se o utilizador não tem loggin ativo Coloca a Permissão co
             if (User.Identity.IsAuthenticated){ 
@@ -127,7 +129,7 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento, EventoUtilizadores eventoUtilizadores, IFormFile logoEvento)
+        public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico,passEvento")] Evento evento, EventoUtilizadores eventoUtilizadores, IFormFile logoEvento)
         {
             // variaveis auxiliares para processar a fotografia
             string caminhoLogo = "";

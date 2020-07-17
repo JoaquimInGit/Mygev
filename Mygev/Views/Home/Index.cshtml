@@ -24,9 +24,8 @@
                     <div class="card bg-light" style="width: 15rem;">
                         <img src="~/Imagens/LogosEventos/@Html.DisplayFor(modelItem => item.Logo)" asp-action="Details" asp-route-id="@item.ID" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <a class="card-title-link" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
+                            <a class="card-title-link" asp-controller="Evento" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
                             <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
-                            <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
