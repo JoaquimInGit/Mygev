@@ -15,17 +15,20 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="IDUser" class="control-label"></label>
-                <select asp-for="IDUser" class="form-control" asp-items="ViewBag.IDUser"></select>
-                <span asp-validation-for="IDUser" class="text-danger"></span>
+                <input class="form-control" readonly value="@ViewBag.IDUser" />
             </div>
             <div class="form-group">
                 <label asp-for="IDEvento" class="control-label"></label>
-                <select asp-for="IDEvento" class="form-control" asp-items="ViewBag.IDEvento"></select>
-                <span asp-validation-for="IDEvento" class="text-danger"></span>
+                <input class="form-control" readonly value="@ViewBag.IDEvento" />
             </div>
             <div class="form-group">
                 <label asp-for="Permissao" class="control-label"></label>
-                <input asp-for="Permissao" class="form-control" />
+                <select asp-for="Permissao" class="form-control">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Participante Contribuidor">Participante Contribuidor</option>
+                    <option value="Participante">Participante</option>
+
+                </select>
                 <span asp-validation-for="Permissao" class="text-danger"></span>
             </div>
             <div class="form-group">

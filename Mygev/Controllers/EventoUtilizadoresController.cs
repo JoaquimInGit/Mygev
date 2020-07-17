@@ -115,8 +115,9 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao", eventoUtilizadores.IDEvento);
-            ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email", eventoUtilizadores.IDUser);
+           
+            ViewData["IDEvento"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
+            ViewData["IDUser"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
             return View(eventoUtilizadores);
         }
 
@@ -152,8 +153,6 @@ namespace Mygev.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "Descricao", eventoUtilizadores.IDEvento);
-            ViewData["IDUser"] = new SelectList(_context.Utilizadores, "ID", "Email", eventoUtilizadores.IDUser);
             return View(eventoUtilizadores);
         }
 

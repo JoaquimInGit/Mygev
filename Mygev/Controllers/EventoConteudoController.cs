@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace Mygev.Controllers
     public class EventoConteudoController : Controller
     {
         private readonly MygevDB _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EventoConteudoController(MygevDB context)
+        public EventoConteudoController(MygevDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: EventoConteudo
@@ -49,9 +52,10 @@ namespace Mygev.Controllers
         }
 
         // GET: EventoConteudo/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "ID");
+            ViewData["Evento"] = _context.Evento.Where(e => e.ID == id).Select(e => e.Nome).FirstOrDefault();
+            ViewBag.id = id;
             return View();
         }
 
@@ -60,16 +64,22 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Conteudo,Comentario,IDEvento")] EventoConteudo eventoConteudo)
+        public async Task<IActionResult> Create(int id, [Bind("Conteudo,Comentario,IDEvento")] EventoConteudo eventoConteudo)
         {
+            //id do evento
+            var evento = await _context.Evento.FindAsync(id);
+            if (evento == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
+                eventoConteudo.IDEvento = id;
+                eventoConteudo.IDUser = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
                 _context.Add(eventoConteudo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "ID", eventoConteudo.IDEvento);
-            return View(eventoConteudo);
+            return RedirectToAction("Details", "Evento", new { id });
         }
 
         // GET: EventoConteudo/Edit/5

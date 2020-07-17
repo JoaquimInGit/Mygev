@@ -34,5 +34,12 @@ namespace Mygev.Models
         [ForeignKey(nameof(Evento))]
         public int IDEvento { get; set; }
         public Evento Evento { get; set; }
+
+        /// <summary>
+        /// chave estrangeira para os Utilizadores
+        /// </summary>
+        [ForeignKey(nameof(Utilizador))]
+        public int IDUser { get; set; }
+        public Utilizadores Utilizador { get; set; }
     }
 }
