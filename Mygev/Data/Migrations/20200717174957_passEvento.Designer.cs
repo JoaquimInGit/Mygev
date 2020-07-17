@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mygev.Data;
 
 namespace Mygev.Migrations
 {
     [DbContext(typeof(MygevDB))]
-    partial class MygevDBModelSnapshot : ModelSnapshot
+    [Migration("20200717174957_passEvento")]
+    partial class passEvento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,14 +289,9 @@ namespace Mygev.Migrations
                     b.Property<int>("IDEvento")
                         .HasColumnType("int");
 
-                    b.Property<int>("IDUser")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
 
                     b.HasIndex("IDEvento");
-
-                    b.HasIndex("IDUser");
 
                     b.ToTable("EventoConteudo");
                 });
@@ -410,12 +407,6 @@ namespace Mygev.Migrations
                     b.HasOne("Mygev.Models.Evento", "Evento")
                         .WithMany("ListaConteudos")
                         .HasForeignKey("IDEvento")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mygev.Models.Utilizadores", "Utilizador")
-                        .WithMany()
-                        .HasForeignKey("IDUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

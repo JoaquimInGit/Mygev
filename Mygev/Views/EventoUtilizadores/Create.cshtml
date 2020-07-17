@@ -14,13 +14,20 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Nome do Evento</label>
-                <input class ="form-control" readonly value="@ViewBag.Evento"/>
+                <input class="form-control" readonly value="@ViewBag.Evento" />
+
+                <label class="">PASSWORD</label>
+                <input type="text" name="passEvento">
+                @if(ViewBag.pass == "Falhou"){
+                 <p>Palavra-pass Errada</p>
+                }
             </div>
 
             <div class="form-group">
                 <p>Tem a certeza que deseja participar</p>
-                    <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id"><input type="submit" value="Sim" class="btn btn-primary"/></a>
-                    @*<a asp-action="Index">Back to List</a>*@
+                    <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id">
+                    
+                <input type="submit" value="Sim" class="btn btn-primary"/></a>
                     <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.id">Voltar a Trás</a>
 </div>
         </form>

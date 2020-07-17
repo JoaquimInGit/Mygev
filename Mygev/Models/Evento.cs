@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,6 +67,12 @@ namespace Mygev.Models {
         /// se o evento é publico ou privado
         /// </summary>
         public bool Publico { get; set; }
+
+        ///summary
+        ///Password para quando o evento é privado, deveria ser encriptado
+        ///</summary>
+        public string passEvento { get; set; }
+        
 
         /// <summary>
         /// lista dos conteudos do Evento 
