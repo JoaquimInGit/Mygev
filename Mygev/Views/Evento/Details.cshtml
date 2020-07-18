@@ -100,24 +100,33 @@
                         <th>
                             Autor
                         </th>
+                        <th>
+                        </th>
                     </tr>
 
                     @foreach (var conteudo in Model.ListaConteudos)
                     {
-                        <tr>
-                            <td>
-                                @*Conteudo*@
-                                @conteudo.Conteudo
-                            </td>
-                            <td>
-                                @*Comentario*@
-                                @conteudo.Comentario
-                            </td>
-                            <td>
-                                @*Comentario*@
-                                @conteudo.Utilizador.NomeUser
-                            </td>
-                        </tr>
+                <tr>
+                    <td>
+                        @*Conteudo*@
+                        @conteudo.Conteudo
+                    </td>
+                    <td>
+                        @*Comentario*@
+                        @conteudo.Comentario
+                    </td>
+                    <td>
+                        @*Comentario*@
+                        @conteudo.Utilizador.NomeUser
+                    </td>
+                    <td>
+                        @if (@ViewBag.Permissao == "Administrador")
+                        {
+                            <a asp-controller="EventoConteudo" asp-action="Delete" asp-route-id="@conteudo.ID">Apagar</a>
+                            <a asp-controller="EventoConteudo" asp-action="Edit" asp-route-id="@conteudo.ID">Editar</a>
+                        }
+                    </td>
+                </tr>
                     }
                 </table>
             </div>

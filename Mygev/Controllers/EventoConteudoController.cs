@@ -68,7 +68,8 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "ID", eventoConteudo.IDEvento);
+            ViewData["IDEvento"] = _context.EventoConteudo.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
+            ViewData["IDUser"] = _context.EventoConteudo.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
             return View(eventoConteudo);
         }
 
@@ -77,10 +78,12 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Conteudo,Comentario,IDEvento")] EventoConteudo eventoConteudo)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Conteudo,Comentario,IDEvento,IDUser")] EventoConteudo eventoConteudo)
         {
+
             if (id != eventoConteudo.ID)
             {
+
                 return NotFound();
             }
 
@@ -102,10 +105,9 @@ namespace Mygev.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Redirect("~/Evento/Details/" + eventoConteudo.IDEvento);
             }
-            ViewData["IDEvento"] = new SelectList(_context.Evento, "ID", "ID", eventoConteudo.IDEvento);
-            return View(eventoConteudo);
+            return Redirect("~/Evento/Details/" + eventoConteudo.IDEvento);
         }
 
         // GET: EventoConteudo/Delete/5
@@ -135,7 +137,9 @@ namespace Mygev.Controllers
             var eventoConteudo = await _context.EventoConteudo.FindAsync(id);
             _context.EventoConteudo.Remove(eventoConteudo);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            //return RedirectToAction("Details", "Evento", new { id });
+            return Redirect("~/Evento/Details/" + eventoConteudo.IDEvento);
         }
 
         private bool EventoConteudoExists(int id)
