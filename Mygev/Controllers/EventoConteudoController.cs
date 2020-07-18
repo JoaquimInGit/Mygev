@@ -27,7 +27,6 @@ namespace Mygev.Controllers
         public IActionResult Create(int id)
         {
             ViewData["Evento"] = _context.Evento.Where(e => e.ID == id).Select(e => e.Nome).FirstOrDefault();
-            ViewBag.id = id;
             return View();
         }
 
@@ -44,6 +43,7 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
+            //insere na BD os valores vindos da View
             if (ModelState.IsValid)
             {
                 eventoConteudo.IDEvento = id;
@@ -51,6 +51,7 @@ namespace Mygev.Controllers
                 _context.Add(eventoConteudo);
                 await _context.SaveChangesAsync();
             }
+            //Redireciona para a pagina anterior, Evento/Details
             return RedirectToAction("Details", "Evento", new { id });
         }
 

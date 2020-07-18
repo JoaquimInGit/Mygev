@@ -14,7 +14,9 @@ namespace Mygev.Controllers
 
     public class EventoUtilizadoresController : Controller
     {
+    //Contexto para a BD
         private readonly MygevDB _context;
+        //Contexto para os utilizadores 
         private readonly UserManager<ApplicationUser> _userManager;
 
         public EventoUtilizadoresController(MygevDB context, UserManager<ApplicationUser> userManager)
@@ -24,9 +26,15 @@ namespace Mygev.Controllers
         }
 
         // GET: EventoUtilizadores
+        /// <summary>
+        /// retorna o index dos eventos utilizadores, com os eventos em que o utilizador participa, administra.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
+            //vai encontrar o id do Utilizador que está logado
             int cUserId = _context.Utilizadores.Where(u => u.UserId == _userManager.GetUserId(User)).Select(u => u.ID).FirstOrDefault();
+            //Select de todos os registos onde o Utilizador logado participa
             var mygevDB = _context.EventoUtilizadores
                 .Include(e => e.Evento)
                 .Include(e => e.Utilizador)
@@ -36,26 +44,42 @@ namespace Mygev.Controllers
 
         
         // GET: EventoUtilizadores/Create
+        /// <summary>
+        /// retorna a pagina de confirmaçao de participação num evento
+        /// </summary>
+        /// <param name="id">Id do evento </param>
+        /// <returns></returns>
         public IActionResult Create(int id)
         {
+            //Retorna para a view o Nome do Evento onde vai ser criado um novo registo de Utilizador no evento. 
             ViewData["Evento"] = _context.Evento.Where(e=>e.ID==id).Select(e => e.Nome).FirstOrDefault();
+            //Retorna para a view se o Evento é publico.
             ViewBag.Publico = _context.Evento.Where(e => e.ID == id).Select(e => e.Publico).FirstOrDefault();
+            //Retorna o id do evento
             ViewBag.id = id;
             return View();
         }
-        
+
         // POST: EventoUtilizadores/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Insere na Bd tabela Evento utilizadores a "confirmação", ou seja uma nova linha com as referencias 
+        /// </summary>
+        /// <param name="id">ID do evento</param>
+        /// <param name="eventoUtilizadores">Onde são recebidos os valores de IDEU,IDUser,IDEvento,Permissao da view </param>
+        /// <param name="passEvento">palavra chave para confirmaçao de participação em eventos privados</param>
+        /// <returns></returns>
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id,[Bind("IDEU,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores, string passEvento)
         {
+        //procura a chave do evento na BD
             var pass = await _context.Evento
                .Where(v => v.ID == id)
                .Select(v => v.passEvento)
                .FirstOrDefaultAsync();
 
+            //Testa de as chave recebida e a da BD coincide
             if (pass != passEvento)
             {
                 ViewBag.pass = "Falhou";
@@ -78,6 +102,7 @@ namespace Mygev.Controllers
                 .Select(v =>v.IDUser)
                 .FirstOrDefaultAsync();
 
+                //Insere na BD
                 if (!idDB.Equals(idUser))
                 {
                     eventoUtilizadores.IDEvento = id;
@@ -95,6 +120,11 @@ namespace Mygev.Controllers
 
 
         // GET: EventoUtilizadores/Edit/5
+        /// <summary>
+        /// Retorna a pagina de ediçao de participação
+        /// </summary>
+        /// <param name="id">ID do eventoUtilizador</param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,16 +137,20 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-         // ViewBag.IDEvento = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
-          //ViewBag.IDUser = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
+            //Retorna para a view o id do evento com base o id do registo EventoUtilizadores
             ViewData["IDEvento"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDEvento).FirstOrDefault();
-             ViewData["IDUser"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
+            //Retorna para a view o id do Utilizador com base o id do registo EventoUtilizadores
+            ViewData["IDUser"] = _context.EventoUtilizadores.Where(e => e.ID == id).Select(e => e.IDUser).FirstOrDefault();
             return View(eventoUtilizadores);
         }
 
         // POST: EventoUtilizadores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Guarda as alteraçoes feitas na BD
+        /// </summary>
+        /// <param name="id">ID do eventoUtilizador</param>
+        /// <param name="eventoUtilizadores">Parametro que recebe da view os valores de ID,IDUser,IDEvento,Permissao </param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,IDUser,IDEvento,Permissao")] EventoUtilizadores eventoUtilizadores)
@@ -124,14 +158,14 @@ namespace Mygev.Controllers
             if (id != eventoUtilizadores.ID)
             {
                 return NotFound();
-                //return RedirectToAction("Details", "Evento", new { eventoUtilizadores.IDEvento });
+                
             }
-           // new { idxpto = eventoUtilizadores.IDEvento; }
+           
+            //Guarda as alteraçoes
             if (ModelState.IsValid)
             {
                 try
                 {
-                 //  _context.Add(eventoUtilizadores.per)
                     _context.Update(eventoUtilizadores);
                     await _context.SaveChangesAsync();
                 }
@@ -146,21 +180,25 @@ namespace Mygev.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction("Details", "Evento", new { eventoUtilizadores.IDEvento });
+                //Redireciona de volta para o evento
                 return Redirect("~/Evento/Details/" + eventoUtilizadores.IDEvento);
-            }
-           // return RedirectToAction("Details", "Evento/", new { idxpto = eventoUtilizadores.IDEvento });
+            }          
             return Redirect("~/Evento/Details/" + eventoUtilizadores.IDEvento);
         }
 
         // GET: EventoUtilizadores/Delete/5
+        /// <summary>
+        /// elimina a participaçao em um evento
+        /// </summary>
+        /// <param name="id">Id eventoUlizador</param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
+            //Encrontra o id do registo EventoUtilizadores
             var eventoUtilizadores = await _context.EventoUtilizadores
                 .Include(e => e.Evento)
                 .Include(e => e.Utilizador)
@@ -172,7 +210,11 @@ namespace Mygev.Controllers
 
             return View(eventoUtilizadores);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // POST: EventoUtilizadores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

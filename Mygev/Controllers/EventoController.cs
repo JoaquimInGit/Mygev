@@ -41,42 +41,47 @@ namespace Mygev.Controllers
         }
 
         // GET: Evento
+        /// <summary>
+        /// metodo que prepara o Index dos eventos
+        /// Se os parametros virem a null, significa que nao foi executada nenhuma pesquisa.
+        /// </summary>
+        /// <param name="nomeEvento">string com o nome do evento, para efeitos de pesquisa na BD</param>
+        /// <param name="visibilidade">string a visibilidade, para efeitos de pesquisa na BD</param>
+        /// <param name="local">string com o local do evento, para efeitos de pesquisa na BD</param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(String nomeEvento, String visibilidade, String local)
         {
-            if (nomeEvento == null)
-            { nomeEvento = ""; }
+            if (nomeEvento == null) nomeEvento = ""; 
             if (visibilidade == null) visibilidade = "todos";
             if (local == null) local = "";
-                if (visibilidade.Equals("privado"))
-                {
-                    var evento = (IEnumerable<Object>)await _context.Evento
-                        .Where(v => v.Nome.Contains(nomeEvento))
-                        .Where(v=> v.Local.Contains(local))
-                        .Where(v => v.Publico == false)
-                        .ToListAsync();
-                    return View(evento);
-                }
-                if (visibilidade.Equals("publico")){
-                    var evento = (IEnumerable<Object>)await _context.Evento
-                            .Where(v => v.Nome.Contains(nomeEvento))
-                            .Where(v => v.Local.Contains(local))
-                            .Where(v => v.Publico == true)
-                            .ToListAsync();
-                    return View(evento);
 
-                }
-                else{
-                    var evento = (IEnumerable<Object>)await _context.Evento
-                        .Where(v => v.Local.Contains(local))
-                        .Where(v => v.Nome.Contains(nomeEvento))
-                        .ToListAsync();
-                    return View(evento);
-                }
-            
-          /*  else
+            //Se foi pesquisado: Evento Privado, com ou sem local, com ou sem Nome
+            if (visibilidade.Equals("privado"))
             {
-                return View(await _context.Evento.ToListAsync());
-            }*/
+                var evento = (IEnumerable<Object>)await _context.Evento
+                    .Where(v => v.Nome.Contains(nomeEvento))
+                    .Where(v=> v.Local.Contains(local))
+                    .Where(v => v.Publico == false)
+                    .ToListAsync();
+                return View(evento);
+            }
+            //Se foi pesquisado: Evento publico, com ou sem local, com ou sem Nome
+            if (visibilidade.Equals("publico")){
+                var evento = (IEnumerable<Object>)await _context.Evento
+                        .Where(v => v.Nome.Contains(nomeEvento))
+                        .Where(v => v.Local.Contains(local))
+                        .Where(v => v.Publico == true)
+                        .ToListAsync();
+                return View(evento);
+
+            }
+            //REtorna TODOS os Eventos(default)
+            else
+            {          
+                var evento = (IEnumerable<Object>)await _context.Evento
+                    .ToListAsync();
+                return View(evento);
+            }
         }
 
         // GET: Evento/Details/5
@@ -87,9 +92,9 @@ namespace Mygev.Controllers
                 return NotFound();
             }
 
-
+            //Necessario para impedir os participantes de acederem a configuraçoes de administrador de eventos
             ViewBag.Permissao = "Participante";
-            //Se o utilizador não tem loggin ativo Coloca a Permissão co
+            //Se o utilizador não tem loggin ativo Coloca a Permissão como administrador
             if (User.Identity.IsAuthenticated){ 
             //select IDUser from eventoutilizadores where userId=userLogado idevento=id and permissao = 'Administrador'
             var admin = await _context.EventoUtilizadores
@@ -104,6 +109,7 @@ namespace Mygev.Controllers
             else{
                 ViewBag.Permissao = "Participante";
             }
+            //Retorna os detalhes do evento, dos conteudos, utilizadores
             var evento = await _context.Evento
                 .Include(e => e.ListaConteudos)
                 .Include(e => e.ListaUtilizadores)
@@ -121,6 +127,7 @@ namespace Mygev.Controllers
         // GET: Evento/Create
         public IActionResult Create()
         {
+            //para obrigar a checkbox dos eventos privados a estar checkada por defenição
             ViewBag.check = "checked";
             return View();
         }
@@ -132,17 +139,12 @@ namespace Mygev.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico,passEvento")] Evento evento, EventoUtilizadores eventoUtilizadores, IFormFile logoEvento)
         {
-            //Testa se o evento é privado, e se tem password
+            //Se o evento é privado, retorna a view da criaçao com o campo para inserir a Password
             if(evento.Publico == false && evento.passEvento == null){
                 ViewBag.pass = "naoInserida";
                 ViewBag.check = false;
                 return View();
             }
-           /* if (evento.Publico == true && evento.passEvento == null)
-            {
-                ViewBag.pass = "naoInserida";
-                return View();
-            }*/
 
             // variaveis auxiliares para processar a fotografia
             string caminhoLogo = "";
@@ -210,6 +212,7 @@ namespace Mygev.Controllers
 
 
         // GET: Evento/Edit/5
+        //Retorna a pagina para editar eventos
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -228,8 +231,7 @@ namespace Mygev.Controllers
 
 
         // POST: Evento/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //Faz os testes necessarios e depois atualiza a base de dados
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento)
@@ -263,6 +265,7 @@ namespace Mygev.Controllers
         }
 
         // GET: Evento/Delete/5
+        //Retorna a pagina de eliminaçao de um evento
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -281,6 +284,7 @@ namespace Mygev.Controllers
         }
 
         // POST: Evento/Delete/5
+        //Elimina a linha da BD tabela eventos
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
