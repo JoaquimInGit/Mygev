@@ -145,6 +145,10 @@ namespace Mygev.Controllers
                 ViewBag.check = false;
                 return View();
             }
+            if(evento.DataInicio > evento.DataFim){
+                ViewBag.ErrData = "ErroData";
+                return View();
+            }
 
             // variaveis auxiliares para processar a fotografia
             string caminhoLogo = "";

@@ -33,6 +33,9 @@
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
             <div class="form-group">
+                @if(@ViewBag.ErrData == "ErroData"){
+                 <p>Tem de inserir uma data Final após a data de Inicio</p>
+                }
                 <label asp-for="DataFim" class="control-label"></label>
                 <input asp-for="DataFim" class="form-control" />
                 <span asp-validation-for="DataFim" class="text-danger"></span>
