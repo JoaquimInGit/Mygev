@@ -159,7 +159,8 @@
                         @if (@ViewBag.Permissao == "Administrador")
                         {
                             <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
-                        } 
+                        }
+                        <a asp-controller="Utilizadores" asp-action="Details" asp-route-id="@users.IDUser">Perfil</a>
                     </td>
                     </tr>
                     }

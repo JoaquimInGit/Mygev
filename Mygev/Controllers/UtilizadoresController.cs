@@ -14,21 +14,22 @@ namespace Mygev.Controllers
     public class UtilizadoresController : Controller
     {
         private readonly MygevDB _context;
-
-        public UtilizadoresController(MygevDB context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UtilizadoresController(MygevDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Utilizadores
         public async Task<IActionResult> Index()
         {
-        /* var EventoUser = await _context.Utilizadores
-               .Include(e => e.ListaEventos)
+         int id = await _context.Utilizadores
                .Where(e => e.UserId == _userManager.GetUserId(User))
-               .ThenInclude(e => e.ID == e.ListaEventos)
-               .FirstOrDefaultAsync();*/
-            return View(await _context.Utilizadores.ToListAsync());
+               .Select(e => e.ID)
+               .FirstOrDefaultAsync();
+
+            return Redirect("~/Utilizadores/Details/" + id);
         }
 
         // GET: Utilizadores/Details/5
@@ -41,6 +42,18 @@ namespace Mygev.Controllers
 
             var utilizadores = await _context.Utilizadores
                 .FirstOrDefaultAsync(m => m.ID == id);
+            
+                //Vai bustar o id do utilizador loggado
+            int idUser = await _context.Utilizadores
+           .Where(e => e.UserId == _userManager.GetUserId(User))
+           .Select(e => e.ID)
+            .FirstOrDefaultAsync();
+
+            //Testa a ver se o utilizador logado é o que esta aceder aos detalhes
+            if (idUser == id){
+                ViewBag.isUser = "true";
+            }
+
             if (utilizadores == null)
             {
                 return NotFound();
