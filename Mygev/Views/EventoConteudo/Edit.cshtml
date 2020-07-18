@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Edit";
 }
+    <style>
+        body {
+            background-color: #B0C4DE;
+        }
+    </style>
 
 <h4>Editar Conteudo do Evento</h4>
 <hr />
@@ -37,7 +42,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Voltar à Lista</a>
+    <a class="btn-dark btn" asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.IDEvento">Voltar à Lista</a>
 </div>
 
 @section Scripts {
