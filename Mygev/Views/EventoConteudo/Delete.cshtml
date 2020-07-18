@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
+    <style>
+        body {
+            background-color: #B0C4DE;
+        }
+    </style>
 <h3>Tem a certeza que quer eliminar este registo?</h3>
 <div>
     <h4>Conteudo do Evento</h4>
@@ -32,6 +36,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Voltar à lista</a>
+        <a class="btn-dark btn" asp-action="Index">Voltar à lista</a>
     </form>
 </div>
