@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-8">
                 <h3>Lista de Conteudos</h3>
-                @if (@ViewBag.Permissao == "Administrador")
+                @if (@ViewBag.Permissao == "Administrador" || @ViewBag.Permissao == "Participante Contribuidor")
                 {
                     <a asp-controller="EventoConteudo" asp-action="Create" asp-route-id="@Model.ID">Adicionar Conteudo</a>
                 }
@@ -147,13 +147,12 @@
                         @users.Permissao
                     </td>
                     <td>
-                        @*if (@ViewBag.Permissao == "Administrador")
-        {
-            <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
-        }*@
-                        <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
+                        @if (@ViewBag.Permissao == "Administrador")
+                        {
+                            <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
+                        } 
                     </td>
-                </tr>
+                    </tr>
                     }
                 </table>
             </div>

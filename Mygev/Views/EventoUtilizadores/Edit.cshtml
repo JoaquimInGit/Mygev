@@ -3,10 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>EventoUtilizadores</h4>
+    <style>
+        body {
+            background-color: #B0C4DE;
+        }
+    </style>
+<h4>Editar Permissão de um Utilizador num Evento</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,11 +17,11 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="IDUser" class="control-label"></label>
-                <input asp-for="IDUser" class="form-control"  value="@ViewBag.IDUser" />
+                <input asp-for="IDUser" class="form-control" readonly value="@ViewBag.IDUser" />
             </div>
             <div class="form-group">
                 <label asp-for="IDEvento" class="control-label"></label>
-                <input asp-for="IDEvento" class="form-control"  value="@ViewBag.IDEvento" />
+                <input asp-for="IDEvento" class="form-control"  readonly value="@ViewBag.IDEvento" />
             </div>
             <div class="form-group">
                 <label asp-for="Permissao" class="control-label"></label>
@@ -39,7 +41,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar à lista</a>
 </div>
 
 @section Scripts {
