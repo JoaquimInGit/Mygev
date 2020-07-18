@@ -34,25 +34,6 @@ namespace Mygev.Controllers
             return View(await mygevDB.ToListAsync());
         }
 
-        // GET: EventoUtilizadores/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var eventoUtilizadores = await _context.EventoUtilizadores
-                .Include(e => e.Evento)
-                .Include(e => e.Utilizador)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (eventoUtilizadores == null)
-            {
-                return NotFound();
-            }
-
-            return View(eventoUtilizadores);
-        }
         
         // GET: EventoUtilizadores/Create
         public IActionResult Create(int id)

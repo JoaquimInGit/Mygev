@@ -22,34 +22,6 @@ namespace Mygev.Controllers
             _userManager = userManager;
         }
 
-        // GET: EventoConteudo
-        public async Task<IActionResult> Index()
-        {
-            var mygevDB = _context.EventoConteudo.Include(e => e.Evento);
-            //var EventoConteudo = _context.EventoConteudo.Include(e => e.Evento);
-            //var Evento = _context.EventoConteudo.Include(e => e.ID);
-            return View(await mygevDB.ToListAsync());
-            //return View(Tuple.Create(Evento,EventoConteudo));
-        }
-
-        // GET: EventoConteudo/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var eventoConteudo = await _context.EventoConteudo
-                .Include(e => e.Evento)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (eventoConteudo == null)
-            {
-                return NotFound();
-            }
-
-            return View(eventoConteudo);
-        }
 
         // GET: EventoConteudo/Create
         public IActionResult Create(int id)
