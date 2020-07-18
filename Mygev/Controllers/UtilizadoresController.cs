@@ -91,7 +91,7 @@ namespace Mygev.Controllers
             {
                 return NotFound();
             }
-
+            
             var utilizadores = await _context.Utilizadores.FindAsync(id);
             if (utilizadores == null)
             {
@@ -105,16 +105,22 @@ namespace Mygev.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,NomeUser,Email,Password")] Utilizadores utilizadores)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,NomeUser,Email,Localidade,Bio,UserId")] Utilizadores utilizadores)
         {
             if (id != utilizadores.ID)
             {
                 return NotFound();
             }
+            var idUser = await _context.Utilizadores
+           .Where(e => e.UserId == _userManager.GetUserId(User))
+           .Select(e => e.UserId)
+            .FirstOrDefaultAsync();
 
-            if (ModelState.IsValid)
-            {
-                try
+            utilizadores.UserId = idUser;
+
+            //if (ModelState.IsValid)
+           //  {
+            try
                 {
                     _context.Update(utilizadores);
                     await _context.SaveChangesAsync();
@@ -130,9 +136,9 @@ namespace Mygev.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(utilizadores);
+                return Redirect("~/Utilizadores/Details/" + utilizadores.ID);
+           // }
+          //  return Redirect("~/Utilizadores/Details/" + utilizadores.ID);
         }
 
         // GET: Utilizadores/Delete/5

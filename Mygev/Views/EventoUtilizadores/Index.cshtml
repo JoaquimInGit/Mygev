@@ -12,7 +12,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        <a asp-action="Create">Criar um novo Evento</a>
+        <a class="btn-dark btn" asp-action="Create">Criar um novo Evento</a>
     </p>
 }
     <table class="table">
@@ -46,8 +46,8 @@
                                 @Html.DisplayFor(modelItem => item.Permissao)
                             </td>
                             <td>
-                                <a asp-controller="Evento" asp-action="Delete" asp-route-id="@item.IDEvento">Eliminar Evento</a>
-                                <a asp-controller="Evento" asp-action="Details" asp-route-id="@item.IDEvento">Detalhes</a>
+                                <a class="btn-danger btn" asp-controller="Evento" asp-action="Delete" asp-route-id="@item.IDEvento">Eliminar Evento</a>
+                                <a class="btn-primary btn" asp-controller="Evento" asp-action="Details" asp-route-id="@item.IDEvento">Detalhes</a>
 
                                 @*<a asp-action="Delete" asp-route-id="@item.ID">Eliminar Evento</a>*@
                             </td>
@@ -90,8 +90,8 @@
                                 @Html.DisplayFor(modelItem => item.Permissao)
                             </td>
                             <td>
-                                <a asp-action="Delete" asp-route-id="@item.ID">Deixar de Participar</a>
-                                <a asp-controller="Evento" asp-action="Details" asp-route-id="@item.IDEvento">Detalhes</a>
+                                <a class="btn-danger btn" asp-action="Delete" asp-route-id="@item.ID">Deixar de Participar</a>
+                                <a class="btn-primary btn" asp-controller="Evento" asp-action="Details" asp-route-id="@item.IDEvento">Detalhes</a>
                             </td>
                         </tr>
                     }

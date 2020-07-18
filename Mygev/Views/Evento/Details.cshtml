@@ -76,10 +76,10 @@
         <div class="row">
             @if (@ViewBag.Permissao == "Administrador")
             {
-                <a asp-action="Edit" asp-route-id="@Model.ID">Editar |</a>
+                <a class="btn-primary btn" asp-action="Edit" asp-route-id="@Model.ID">Editar </a>
             }
-            <a asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@Model.ID">Participar |</a>
-            <a asp-action="Index">Voltar aos Eventos</a>
+            <a class="btn-success btn" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@Model.ID">Participar </a>
+            <a class="btn-dark btn" asp-action="Index">Voltar aos Eventos</a>
         </div>
         <br />
         <div class="row">
@@ -87,7 +87,7 @@
                 <h3>Lista de Conteudos</h3>
                 @if (@ViewBag.Permissao == "Administrador" || @ViewBag.Permissao == "Participante Contribuidor")
                 {
-                    <a asp-controller="EventoConteudo" asp-action="Create" asp-route-id="@Model.ID">Adicionar Conteudo</a>
+                    <a class="btn-dark btn"  asp-controller="EventoConteudo" asp-action="Create" asp-route-id="@Model.ID">Adicionar Conteudo</a>
                 }
                 <table class="table">
                     <tr>
@@ -122,8 +122,8 @@
                     <td>
                         @if (@ViewBag.Permissao == "Administrador")
                         {
-                            <a asp-controller="EventoConteudo" asp-action="Delete" asp-route-id="@conteudo.ID">Apagar</a>
-                            <a asp-controller="EventoConteudo" asp-action="Edit" asp-route-id="@conteudo.ID">Editar</a>
+                            <a class="btn-danger btn" asp-controller="EventoConteudo" asp-action="Delete" asp-route-id="@conteudo.ID">Apagar</a>
+                            <a class="btn-warning btn" asp-controller="EventoConteudo" asp-action="Edit" asp-route-id="@conteudo.ID">Editar</a>
                         }
                     </td>
                 </tr>
@@ -158,9 +158,9 @@
                     <td>
                         @if (@ViewBag.Permissao == "Administrador")
                         {
-                            <a asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
+                            <a class="btn-warning btn" asp-controller="EventoUtilizadores" asp-action="Edit" asp-route-id="@users.ID">Edit</a>
                         }
-                        <a asp-controller="Utilizadores" asp-action="Details" asp-route-id="@users.IDUser">Perfil</a>
+                        <a  class="btn-primary btn" asp-controller="Utilizadores" asp-action="Details" asp-route-id="@users.IDUser">Perfil</a>
                     </td>
                     </tr>
                     }

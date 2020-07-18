@@ -3,10 +3,14 @@
 @{
     ViewData["Title"] = "Edit";
 }
+    <style>
+        body {
+            background-color: #B0C4DE;
+        }
+    </style>
 
-<h1>Edit</h1>
 
-<h4>Utilizadores</h4>
+<h4>Editar - Utilizadores</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -41,7 +45,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn-dark btn" asp-controller="Utilizadores" asp-action="Index" asp-route-id="@Model.ID">Voltar a Traz</a>
 </div>
 
 @section Scripts {

@@ -4,10 +4,15 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+    <style>
+        body {
+            background-color: #B0C4DE;
+        }
+    </style>  
+
 
 <div>
-    <h4>Utilizadores</h4>
+    <h4>Detalhes - Utilizadores</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -41,9 +46,9 @@
     {
         if (ViewBag.isUser == "true")
         {
-            <a asp-action="Edit" asp-route-id="@Model.ID">Edit |</a>
+            <a class="btn-primary btn" asp-action="Edit" asp-route-id="@Model.ID">Editar</a>
 
         }
-        <a asp-controller="Evento" asp-action="Index">Back to List</a>
+
     }
 </div>

@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Mygev-C07EEDD2-0A2C-425A-A3D9-4B09806A7190</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200718164247_mudancas.cs" />
+    <Compile Remove="Data\Migrations\20200718164247_mudancas.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
