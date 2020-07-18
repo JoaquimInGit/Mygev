@@ -15,11 +15,12 @@
             <div class="form-group">
                 <label class="control-label">Nome do Evento</label>
                 <input class="form-control" readonly value="@ViewBag.Evento" />
-
+                @if(@ViewBag.Publico == false){ 
                 <label class="">PASSWORD</label>
                 <input type="text" name="passEvento">
-                @if(ViewBag.pass == "Falhou"){
+                @if(@ViewBag.pass == "Falhou"){
                  <p>Palavra-pass Errada</p>
+                }
                 }
             </div>
 

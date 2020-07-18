@@ -26,7 +26,11 @@
                         <div class="card-body">
                             <a class="card-title-link" asp-controller="Evento" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Nome)</a>
                             <p class="card-text">@Html.DisplayFor(modelItem => item.Descricao)</p>
-                        </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="card-link" asp-controller="EventoUtilizadores" asp-action="Create" asp-route-id="@item.ID">Participar</a>
+                            }
+                            </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">@Html.DisplayNameFor(model => model.Local) : @Html.DisplayFor(modelItem => item.Local)</li>
                             <li class="list-group-item">@Html.DisplayNameFor(model => model.DataInicio) : @Html.DisplayFor(modelItem => item.DataInicio)</li>

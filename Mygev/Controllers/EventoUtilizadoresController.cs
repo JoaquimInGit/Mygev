@@ -58,6 +58,7 @@ namespace Mygev.Controllers
         public IActionResult Create(int id)
         {
             ViewData["Evento"] = _context.Evento.Where(e=>e.ID==id).Select(e => e.Nome).FirstOrDefault();
+            ViewBag.Publico = _context.Evento.Where(e => e.ID == id).Select(e => e.Publico).FirstOrDefault();
             ViewBag.id = id;
             return View();
         }

@@ -45,7 +45,7 @@ namespace Mygev.Controllers
         {
             if (nomeEvento == null)
             { nomeEvento = ""; }
-            if (visibilidade == null) visibilidade = "publico";
+            if (visibilidade == null) visibilidade = "todos";
             if (local == null) local = "";
                 if (visibilidade.Equals("privado"))
                 {
@@ -121,6 +121,7 @@ namespace Mygev.Controllers
         // GET: Evento/Create
         public IActionResult Create()
         {
+            ViewBag.check = "checked";
             return View();
         }
 
@@ -131,6 +132,18 @@ namespace Mygev.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico,passEvento")] Evento evento, EventoUtilizadores eventoUtilizadores, IFormFile logoEvento)
         {
+            //Testa se o evento é privado, e se tem password
+            if(evento.Publico == false && evento.passEvento == null){
+                ViewBag.pass = "naoInserida";
+                ViewBag.check = false;
+                return View();
+            }
+           /* if (evento.Publico == true && evento.passEvento == null)
+            {
+                ViewBag.pass = "naoInserida";
+                return View();
+            }*/
+
             // variaveis auxiliares para processar a fotografia
             string caminhoLogo = "";
             bool haImagem = false;

@@ -52,16 +52,26 @@
                 </select>
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Publico" /> @Html.DisplayNameFor(model => model.Publico)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="passEvento" class="control-label"></label>
-                <input asp-for="passEvento" class="form-control" />
-                <span asp-validation-for="passEvento" class="text-danger"></span>
-            </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Publico" checked=@ViewBag.check /> @Html.DisplayNameFor(model => model.Publico)
+                    </label>
+                </div>
+                <div class="form-group">
+
+                    @if (@ViewBag.pass == "naoInserida")
+                    {
+                        <p>Insira uma password</p>
+                        <p>Password Obrigatoria</p>
+                    
+                    <label asp-for="passEvento" class="control-label"></label>
+                    <input asp-for="passEvento" class="form-control" />
+                    <span asp-validation-for="passEvento" class="text-danger"></span>
+                    }
+
+
+        </div> 
+           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
