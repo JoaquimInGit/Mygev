@@ -58,7 +58,7 @@ namespace Mygev.Controllers
             //Se foi pesquisado: Evento Privado, com ou sem local, com ou sem Nome
             if (visibilidade.Equals("privado"))
             {
-                var evento = (IEnumerable<Object>)await _context.Evento
+                var evento = await _context.Evento
                     .Where(v => v.Nome.Contains(nomeEvento))
                     .Where(v=> v.Local.Contains(local))
                     .Where(v => v.Publico == false)
@@ -67,7 +67,7 @@ namespace Mygev.Controllers
             }
             //Se foi pesquisado: Evento publico, com ou sem local, com ou sem Nome
             if (visibilidade.Equals("publico")){
-                var evento = (IEnumerable<Object>)await _context.Evento
+                var evento = await _context.Evento
                         .Where(v => v.Nome.Contains(nomeEvento))
                         .Where(v => v.Local.Contains(local))
                         .Where(v => v.Publico == true)
@@ -78,7 +78,7 @@ namespace Mygev.Controllers
             //REtorna TODOS os Eventos(default)
             else
             {          
-                var evento = (IEnumerable<Object>)await _context.Evento
+                var evento = await _context.Evento
                     .ToListAsync();
                 return View(evento);
             }
