@@ -219,6 +219,7 @@ namespace Mygev.Controllers
         //Retorna a pagina para editar eventos
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -238,12 +239,46 @@ namespace Mygev.Controllers
         //Faz os testes necessarios e depois atualiza a base de dados
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nome,Logo,Local,DataInicio,DataFim,Descricao,Estado,Publico")] Evento evento, IFormFile logoEvento)
         {
             if (id != evento.ID)
+                {
+                    return NotFound();
+                }
+            // variaveis auxiliares para processar a fotografia
+            string caminhoLogo = "";
+            bool haImagem = false;
+
+            // Se houver logo
+            if (logoEvento != null)
             {
-                return NotFound();
+                
+                // Se houver imagem
+                // Verificar se é uma imagem
+                if (logoEvento.ContentType == "image/jpeg" ||
+                    logoEvento.ContentType == "image/png")
+                {
+                    // o ficheiro é uma imagem válida
+                    // preparar a imagem para ser guardada no disco rígido
+                    // e o seu nome associado ao Evento
+                    Guid g;
+                    g = Guid.NewGuid();
+                    string extensao = Path.GetExtension(logoEvento.FileName).ToLower();
+                    string nome = g.ToString() + extensao;
+                    // onde guardar o ficheiro
+                    caminhoLogo = Path.Combine(_caminho.WebRootPath, "Imagens\\LogosEventos", nome);
+                    // associar o nome do ficheiro ao Evento
+                    evento.Logo = nome;
+                    // assinalar que existe imagem e é preciso guardá-la no disco rígido
+                    haImagem = true;
+                }
+                else
+                {
+                    // há imagem, mas não é do tipo correto
+                    evento.Logo = "logoDefault.jpg";
+                }
             }
+            
 
             if (ModelState.IsValid)
             {
@@ -251,6 +286,12 @@ namespace Mygev.Controllers
                 {
                     _context.Update(evento);
                     await _context.SaveChangesAsync();
+                    // se há imagem, vou guardá-la no disco rígido
+                    if (haImagem)
+                    {
+                        using var stream = new FileStream(caminhoLogo, FileMode.Create);
+                        await logoEvento.CopyToAsync(stream);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {

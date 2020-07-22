@@ -12,7 +12,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        <a class="btn-dark btn" asp-action="Create">Criar um novo Evento</a>
+        <a class="btn-dark btn" asp-controller="Evento" asp-action="Create">Criar um novo Evento</a>
     </p>
 }
     <table class="table">
@@ -32,7 +32,7 @@
         </thead>
         <tbody>
             @foreach (var item in Model)
-                @if (item.Permissao != "Participante")
+                @if (item.Permissao == "Administrador")
                 {
                     {
                         <tr>
@@ -48,8 +48,6 @@
                             <td>
                                 <a class="btn-danger btn" asp-controller="Evento" asp-action="Delete" asp-route-id="@item.IDEvento">Eliminar Evento</a>
                                 <a class="btn-primary btn" asp-controller="Evento" asp-action="Details" asp-route-id="@item.IDEvento">Detalhes</a>
-
-                                @*<a asp-action="Delete" asp-route-id="@item.ID">Eliminar Evento</a>*@
                             </td>
                         </tr>
                     }
@@ -75,7 +73,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    @if (item.Permissao == "Participante")
+                    @if (item.Permissao == "Participante Contribuidor" || item.Permissao == "Participante")
                     {
 
 
